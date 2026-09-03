@@ -10,6 +10,8 @@ value class AdjacentMineCount(
 
     override fun toString(): String = value.toString()
 
+    fun isZero(): Boolean = value == MINIMUM_COUNT
+
     private companion object {
         const val MINIMUM_COUNT = 0
         const val MAXIMUM_COUNT = 8

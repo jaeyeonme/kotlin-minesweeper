@@ -3,13 +3,21 @@ package minesweeper.domain
 class Cell(
     private val position: Position,
 ) {
-    private var content: CellContent = CellContent.SAFE
+    private var state: CellState = CellState.CLOSED_SAFE
 
     fun placeMine() {
-        content = CellContent.MINE
+        state = state.placeMine()
+    }
+
+    fun open() {
+        state = state.open()
     }
 
     fun matches(position: Position): Boolean = this.position == position
 
-    fun snapshot(): CellSnapshot = CellSnapshot(position, content)
+    fun isMine(): Boolean = state.isMine()
+
+    fun isOpen(): Boolean = state.isOpen()
+
+    fun snapshot(): CellSnapshot = CellSnapshot(position, state)
 }
