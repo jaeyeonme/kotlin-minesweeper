@@ -25,6 +25,8 @@ class Cells private constructor(
         return !cell.isMine() && !cell.isOpen()
     }
 
+    fun hasOpenedMine(): Boolean = values.any { cell -> cell.isMine() && cell.isOpen() }
+
     fun areAllSafeCellsOpen(): Boolean = values.all { cell -> cell.isMine() || cell.isOpen() }
 
     private fun find(position: Position): Cell =
