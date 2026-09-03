@@ -9,6 +9,11 @@ class Position(
         width: Int,
     ): Boolean = horizontal in 0 until width && vertical in 0 until height
 
+    fun translatedBy(
+        horizontalOffset: Int,
+        verticalOffset: Int,
+    ): Position = Position(horizontal + horizontalOffset, vertical + verticalOffset)
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other !is Position) return false

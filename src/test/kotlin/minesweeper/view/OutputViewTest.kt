@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Test
 
 class OutputViewTest {
     @Test
-    fun `지뢰와 안전 칸을 공백으로 구분해 행과 열에 맞춰 출력한다`() {
-        val configuration = GameConfiguration(BoardSize(height = 2, width = 3), MineCount(2))
-        val board = configuration.createBoard(fixedPlacement(Position(0, 0), Position(2, 1)))
+    fun `지뢰와 주변 지뢰 개수를 공백으로 구분해 행과 열에 맞춰 출력한다`() {
+        val configuration = GameConfiguration(BoardSize(height = 3, width = 3), MineCount(1))
+        val board = configuration.createBoard(fixedPlacement(Position(0, 0)))
         val outputView = OutputView(writeLine = {})
 
         val result = outputView.render(board.snapshot())
 
-        assertThat(result).isEqualTo("* C C\nC C *")
+        assertThat(result).isEqualTo("* 1 0\n1 1 0\n0 0 0")
     }
 
     private fun fixedPlacement(vararg positions: Position): MinePlacementStrategy =

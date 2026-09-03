@@ -9,4 +9,13 @@ class CellSnapshot(
     fun isMine(): Boolean = content == CellContent.MINE
 
     fun <T> mapContent(transform: (CellContent) -> T): T = transform(content)
+
+    fun <T> mapByContent(
+        onMine: () -> T,
+        onSafe: (Position) -> T,
+    ): T =
+        when (content) {
+            CellContent.MINE -> onMine()
+            CellContent.SAFE -> onSafe(position)
+        }
 }
