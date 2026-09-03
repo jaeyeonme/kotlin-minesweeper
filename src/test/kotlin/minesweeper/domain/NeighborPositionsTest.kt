@@ -27,4 +27,19 @@ class NeighborPositionsTest {
         assertThat(result.contains(Position(0, 1))).isTrue()
         assertThat(result.contains(Position(1, 1))).isTrue()
     }
+
+    @Test
+    fun `가장자리 위치는 보드 범위 안의 주변 5개 위치만 가진다`() {
+        val boardSize = BoardSize(height = 3, width = 3)
+        val edge = Position(1, 0)
+
+        val result = NeighborPositions.around(edge, boardSize)
+
+        assertThat(result.count()).isEqualTo(5)
+        assertThat(result.contains(Position(0, 0))).isTrue()
+        assertThat(result.contains(Position(2, 0))).isTrue()
+        assertThat(result.contains(Position(0, 1))).isTrue()
+        assertThat(result.contains(Position(1, 1))).isTrue()
+        assertThat(result.contains(Position(2, 1))).isTrue()
+    }
 }
