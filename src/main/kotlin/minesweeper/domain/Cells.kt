@@ -18,7 +18,8 @@ class Cells private constructor(
 
     companion object {
         fun create(boardSize: BoardSize): Cells {
-            val cells = boardSize.positions().map(::Cell)
+            val positions = boardSize.positions()
+            val cells = positions.map(::Cell)
             return Cells(cells)
         }
     }

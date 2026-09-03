@@ -8,5 +8,5 @@ class CellSnapshot(
 
     fun isMine(): Boolean = content == CellContent.MINE
 
-    fun content(): CellContent = content
+    fun <T> mapContent(transform: (CellContent) -> T): T = transform(content)
 }

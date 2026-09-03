@@ -10,7 +10,8 @@ class GameConfiguration(
 
     fun createBoard(minePlacementStrategy: MinePlacementStrategy): Board {
         val minePositions = minePlacementStrategy.select(boardSize, mineCount)
-        require(mineCount.matches(minePositions.count())) { "지뢰 개수가 게임 설정과 일치하지 않습니다." }
+        val selectedMineCount = minePositions.count()
+        require(mineCount.matches(selectedMineCount)) { "지뢰 개수가 게임 설정과 일치하지 않습니다." }
         return Board.create(boardSize, minePositions)
     }
 }

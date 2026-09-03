@@ -5,7 +5,9 @@ class MinePositions(
 ) {
     init {
         val uniquePositions = values.distinct()
-        require(uniquePositions.size == values.size) { "지뢰 위치는 중복될 수 없습니다." }
+        val uniquePositionCount = uniquePositions.size
+        val positionCount = values.size
+        require(uniquePositionCount == positionCount) { "지뢰 위치는 중복될 수 없습니다." }
     }
 
     fun count(): Int = values.size

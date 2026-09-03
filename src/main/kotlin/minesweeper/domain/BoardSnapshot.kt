@@ -11,11 +11,10 @@ class BoardSnapshot(
     fun contentAt(position: Position): CellContent =
         cells
             .first { cell -> cell.matches(position) }
-            .content()
+            .mapContent { content -> content }
 
     fun mapRows(transform: (CellContent) -> String): List<List<String>> {
-        val contents = cells.map(CellSnapshot::content)
-        val symbols = contents.map(transform)
+        val symbols = cells.map { cell -> cell.mapContent(transform) }
         return boardSize.splitIntoRows(symbols)
     }
 }

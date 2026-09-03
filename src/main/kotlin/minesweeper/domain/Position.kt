@@ -12,12 +12,17 @@ class Position(
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other !is Position) return false
-        return horizontal == other.horizontal && vertical == other.vertical
+        return other.hasCoordinates(horizontal, vertical)
     }
 
     override fun hashCode(): Int = HASH_MULTIPLIER * horizontal + vertical
 
     override fun toString(): String = "Position(horizontal=$horizontal, vertical=$vertical)"
+
+    private fun hasCoordinates(
+        horizontal: Int,
+        vertical: Int,
+    ): Boolean = this.horizontal == horizontal && this.vertical == vertical
 
     companion object {
         private const val HASH_MULTIPLIER = 31
