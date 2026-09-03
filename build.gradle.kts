@@ -1,4 +1,5 @@
 plugins {
+    application
     kotlin("jvm") version "2.4.10"
     id("org.jlleitschuh.gradle.ktlint") version "14.2.0"
 }
@@ -8,6 +9,10 @@ version = "1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
+}
+
+application {
+    mainClass.set("minesweeper.MinesweeperApplicationKt")
 }
 
 dependencies {
@@ -22,6 +27,10 @@ kotlin {
 
 tasks.test {
     useJUnitPlatform()
+}
+
+tasks.named<JavaExec>("run") {
+    standardInput = System.`in`
 }
 
 ktlint {
