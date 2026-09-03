@@ -10,11 +10,6 @@ class BoardSnapshot(
 
     fun contentAt(position: Position): CellContent = find(position).mapContent { content -> content }
 
-    fun isOpenAt(position: Position): Boolean {
-        require(boardSize.contains(position)) { "조회할 위치는 보드 범위 안에 있어야 합니다." }
-        return find(position).isOpen()
-    }
-
     fun adjacentMineCountAt(position: Position): AdjacentMineCount {
         require(boardSize.contains(position)) { "조회할 위치는 보드 범위 안에 있어야 합니다." }
         val neighborPositions = NeighborPositions.around(position, boardSize)

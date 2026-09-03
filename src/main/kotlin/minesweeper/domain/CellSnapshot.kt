@@ -8,8 +8,6 @@ class CellSnapshot(
 
     fun isMine(): Boolean = state.isMine()
 
-    fun isOpen(): Boolean = state.isOpen()
-
     fun <T> mapContent(transform: (CellContent) -> T): T = state.mapContent(transform)
 
     fun <T> mapByState(

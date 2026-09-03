@@ -11,8 +11,11 @@ class GameTest {
 
         val snapshot = game.snapshot()
 
-        assertThat(snapshot.isOpenAt(Position(0, 0))).isFalse()
-        assertThat(snapshot.isOpenAt(Position(1, 1))).isFalse()
+        assertThat(openStates(snapshot))
+            .containsExactly(
+                listOf(false, false),
+                listOf(false, false),
+            )
     }
 
     @Test
@@ -22,8 +25,12 @@ class GameTest {
         game.open(Position(0, 0))
 
         val snapshot = game.snapshot()
-        assertThat(snapshot.isOpenAt(Position(0, 0))).isTrue()
-        assertThat(snapshot.isOpenAt(Position(1, 0))).isFalse()
+        assertThat(openStates(snapshot))
+            .containsExactly(
+                listOf(true, false, false),
+                listOf(false, false, false),
+                listOf(false, false, false),
+            )
         assertThat(snapshot.adjacentMineCountAt(Position(0, 0))).isEqualTo(AdjacentMineCount(1))
         assertThat(game.isInProgress()).isTrue()
     }
@@ -36,10 +43,12 @@ class GameTest {
         game.open(Position(0, 0))
 
         val snapshot = game.snapshot()
-        assertThat(snapshot.isOpenAt(Position(0, 0))).isTrue()
-        assertThat(snapshot.isOpenAt(Position(1, 1))).isTrue()
-        assertThat(snapshot.isOpenAt(Position(2, 1))).isTrue()
-        assertThat(snapshot.isOpenAt(minePosition)).isFalse()
+        assertThat(openStates(snapshot))
+            .containsExactly(
+                listOf(true, true, true),
+                listOf(true, true, true),
+                listOf(true, true, false),
+            )
         assertThat(game.isWon()).isTrue()
     }
 
@@ -51,7 +60,11 @@ class GameTest {
         game.open(minePosition)
 
         assertThat(game.isLost()).isTrue()
-        assertThat(game.snapshot().isOpenAt(minePosition)).isTrue()
+        assertThat(openStates(game.snapshot()))
+            .containsExactly(
+                listOf(false, false),
+                listOf(false, true),
+            )
     }
 
     @Test
@@ -79,4 +92,11 @@ class GameTest {
         val placement = MinePlacementStrategy { _, _ -> MinePositions(listOf(minePosition)) }
         return configuration.createGame(placement)
     }
+
+    private fun openStates(snapshot: BoardSnapshot): List<List<Boolean>> =
+        snapshot.mapRows(
+            onClosed = { false },
+            onMine = { true },
+            onSafe = { true },
+        )
 }
