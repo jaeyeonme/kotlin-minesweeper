@@ -17,9 +17,12 @@ class BoardSnapshot(
         return AdjacentMineCount(count)
     }
 
-    fun mapRows(transform: (CellContent) -> String): List<List<String>> {
-        val symbols = cells.map { cell -> cell.mapContent(transform) }
-        return boardSize.splitIntoRows(symbols)
+    fun <T> mapRows(
+        onMine: () -> T,
+        onSafe: (AdjacentMineCount) -> T,
+    ): List<List<T>> {
+        val values = cells.map { cell -> mapCell(cell, onMine, onSafe) }
+        return boardSize.splitIntoRows(values)
     }
 
     private fun isMineAt(position: Position): Boolean = find(position).isMine()
@@ -28,4 +31,14 @@ class BoardSnapshot(
         cells.first { cell ->
             cell.matches(position)
         }
+
+    private fun <T> mapCell(
+        cell: CellSnapshot,
+        onMine: () -> T,
+        onSafe: (AdjacentMineCount) -> T,
+    ): T =
+        cell.mapByContent(
+            onMine = onMine,
+            onSafe = { position -> onSafe(adjacentMineCountAt(position)) },
+        )
 }
