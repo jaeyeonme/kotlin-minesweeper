@@ -31,6 +31,16 @@ class Position(
 
     companion object {
         private const val HASH_MULTIPLIER = 31
+        private const val EXTERNAL_COORDINATE_ORIGIN = 1
+
+        fun fromOneBased(
+            horizontal: Int,
+            vertical: Int,
+        ): Position =
+            Position(
+                horizontal = horizontal - EXTERNAL_COORDINATE_ORIGIN,
+                vertical = vertical - EXTERNAL_COORDINATE_ORIGIN,
+            )
 
         fun fromIndex(
             index: Int,
