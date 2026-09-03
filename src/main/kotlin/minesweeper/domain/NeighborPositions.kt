@@ -9,6 +9,10 @@ class NeighborPositions private constructor(
 
     fun countMatching(predicate: (Position) -> Boolean): Int = values.count(predicate)
 
+    fun forEach(action: (Position) -> Unit) {
+        values.forEach(action)
+    }
+
     companion object {
         fun around(
             center: Position,

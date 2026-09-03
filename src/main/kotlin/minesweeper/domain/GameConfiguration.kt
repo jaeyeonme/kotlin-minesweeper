@@ -14,4 +14,9 @@ class GameConfiguration(
         require(mineCount.matches(selectedMineCount)) { "지뢰 개수가 게임 설정과 일치하지 않습니다." }
         return Board.create(boardSize, minePositions)
     }
+
+    fun createGame(minePlacementStrategy: MinePlacementStrategy): Game {
+        val board = createBoard(minePlacementStrategy)
+        return Game.start(board)
+    }
 }

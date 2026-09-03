@@ -9,7 +9,23 @@ class Cells private constructor(
         }
     }
 
-    fun snapshots(): List<CellSnapshot> = values.map(Cell::snapshot)
+    fun snapshots(): CellSnapshots {
+        val snapshots = values.map(Cell::snapshot)
+        return CellSnapshots(snapshots)
+    }
+
+    fun open(position: Position) {
+        find(position).open()
+    }
+
+    fun isMineAt(position: Position): Boolean = find(position).isMine()
+
+    fun canOpenSafely(position: Position): Boolean {
+        val cell = find(position)
+        return !cell.isMine() && !cell.isOpen()
+    }
+
+    fun areAllSafeCellsOpen(): Boolean = values.all { cell -> cell.isMine() || cell.isOpen() }
 
     private fun find(position: Position): Cell =
         values.first { cell ->

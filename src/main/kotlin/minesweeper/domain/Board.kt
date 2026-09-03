@@ -6,6 +6,45 @@ class Board private constructor(
 ) {
     fun snapshot(): BoardSnapshot = BoardSnapshot(boardSize, cells.snapshots())
 
+    fun open(position: Position): GameStatus {
+        require(boardSize.contains(position)) { "열 위치는 보드 범위 안에 있어야 합니다." }
+        if (cells.isMineAt(position)) {
+            cells.open(position)
+            return GameStatus.LOST
+        }
+        openSafeArea(position)
+        if (cells.areAllSafeCellsOpen()) {
+            return GameStatus.WON
+        }
+        return GameStatus.IN_PROGRESS
+    }
+
+    private fun openSafeArea(position: Position) {
+        val positionsToOpen = PositionsToOpen(position)
+        while (positionsToOpen.hasNext()) {
+            openNextSafePosition(positionsToOpen)
+        }
+    }
+
+    private fun openNextSafePosition(positionsToOpen: PositionsToOpen) {
+        val position = positionsToOpen.removeFirst()
+        if (!cells.canOpenSafely(position)) {
+            return
+        }
+        cells.open(position)
+        if (hasAdjacentMine(position)) {
+            return
+        }
+        val neighborPositions = NeighborPositions.around(position, boardSize)
+        positionsToOpen.addAll(neighborPositions)
+    }
+
+    private fun hasAdjacentMine(position: Position): Boolean {
+        val currentSnapshot = snapshot()
+        val adjacentMineCount = currentSnapshot.adjacentMineCountAt(position)
+        return !adjacentMineCount.isZero()
+    }
+
     companion object {
         fun create(
             boardSize: BoardSize,
