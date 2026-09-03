@@ -32,6 +32,21 @@ class InputViewTest {
             .containsExactly("높이를 입력하세요.", "너비를 입력하세요.", "지뢰는 몇 개인가요?")
     }
 
+    @Test
+    fun `쉼표로 구분한 가로와 세로 좌표를 1부터 시작하는 위치로 입력받는다`() {
+        val prompts = mutableListOf<String>()
+        val inputView =
+            InputView(
+                readLine = { "2, 3" },
+                writeLine = { prompt -> prompts.add(prompt) },
+            )
+
+        val result = inputView.readPosition()
+
+        assertThat(result).isEqualTo(Position(1, 2))
+        assertThat(prompts).containsExactly("open:")
+    }
+
     private fun fixedPlacement(): MinePlacementStrategy =
         MinePlacementStrategy { _: BoardSize, _: MineCount ->
             MinePositions(listOf(Position(0, 0), Position(2, 1)))
