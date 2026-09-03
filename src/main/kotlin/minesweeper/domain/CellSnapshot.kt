@@ -12,14 +12,9 @@ class CellSnapshot(
 
     fun <T> mapContent(transform: (CellContent) -> T): T = state.mapContent(transform)
 
-    fun <T> mapByContent(
+    fun <T> mapByState(
+        onClosed: () -> T,
         onMine: () -> T,
         onSafe: (Position) -> T,
-    ): T =
-        state.mapContent { content ->
-            when (content) {
-                CellContent.MINE -> onMine()
-                CellContent.SAFE -> onSafe(position)
-            }
-        }
+    ): T = state.mapVisibility(onClosed, onMine) { onSafe(position) }
 }

@@ -29,4 +29,15 @@ enum class CellState {
             CLOSED_SAFE, OPEN_SAFE -> transform(CellContent.SAFE)
             CLOSED_MINE, OPEN_MINE -> transform(CellContent.MINE)
         }
+
+    fun <T> mapVisibility(
+        onClosed: () -> T,
+        onMine: () -> T,
+        onSafe: () -> T,
+    ): T =
+        when (this) {
+            CLOSED_SAFE, CLOSED_MINE -> onClosed()
+            OPEN_MINE -> onMine()
+            OPEN_SAFE -> onSafe()
+        }
 }

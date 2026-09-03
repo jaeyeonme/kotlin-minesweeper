@@ -23,10 +23,11 @@ class BoardSnapshot(
     }
 
     fun <T> mapRows(
+        onClosed: () -> T,
         onMine: () -> T,
         onSafe: (AdjacentMineCount) -> T,
     ): List<List<T>> {
-        val values = cells.map { cell -> mapCell(cell, onMine, onSafe) }
+        val values = cells.map { cell -> mapCell(cell, onClosed, onMine, onSafe) }
         return boardSize.splitIntoRows(values)
     }
 
@@ -39,10 +40,12 @@ class BoardSnapshot(
 
     private fun <T> mapCell(
         cell: CellSnapshot,
+        onClosed: () -> T,
         onMine: () -> T,
         onSafe: (AdjacentMineCount) -> T,
     ): T =
-        cell.mapByContent(
+        cell.mapByState(
+            onClosed = onClosed,
             onMine = onMine,
             onSafe = { position -> onSafe(adjacentMineCountAt(position)) },
         )
