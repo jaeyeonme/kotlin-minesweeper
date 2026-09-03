@@ -9,7 +9,10 @@ class Cells private constructor(
         }
     }
 
-    fun snapshots(): List<CellSnapshot> = values.map(Cell::snapshot)
+    fun snapshots(): CellSnapshots {
+        val snapshots = values.map(Cell::snapshot)
+        return CellSnapshots(snapshots)
+    }
 
     fun open(position: Position) {
         find(position).open()

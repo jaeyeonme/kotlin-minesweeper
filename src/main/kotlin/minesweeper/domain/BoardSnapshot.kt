@@ -2,11 +2,11 @@ package minesweeper.domain
 
 class BoardSnapshot(
     private val boardSize: BoardSize,
-    private val cells: List<CellSnapshot>,
+    private val cells: CellSnapshots,
 ) {
-    fun cellCount(): Int = cells.size
+    fun cellCount(): Int = cells.count()
 
-    fun mineCount(): Int = cells.count(CellSnapshot::isMine)
+    fun mineCount(): Int = cells.countMines()
 
     fun contentAt(position: Position): CellContent = find(position).mapContent { content -> content }
 
@@ -28,10 +28,7 @@ class BoardSnapshot(
 
     private fun isMineAt(position: Position): Boolean = find(position).isMine()
 
-    private fun find(position: Position): CellSnapshot =
-        cells.first { cell ->
-            cell.matches(position)
-        }
+    private fun find(position: Position): CellSnapshot = cells.find(position)
 
     private fun <T> mapCell(
         cell: CellSnapshot,
